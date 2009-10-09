@@ -4,17 +4,17 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "sudoku"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "shuber@huberry.com"
-    gem.homepage = "http://github.com/shuber/sudoku"
-    gem.authors = ["Sean Huber"]
-    gem.add_development_dependency "thoughtbot-shoulda"
+    gem.name = 'sudoku'
+    gem.summary = 'solves square sudoku puzzles'
+    gem.description = 'solves square sudoku puzzles'
+    gem.email = 'shuber@huberry.com'
+    gem.homepage = 'http://github.com/shuber/sudoku'
+    gem.authors = ['Sean Huber']
+    gem.add_development_dependency 'thoughtbot-shoulda'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
+  puts 'Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler'
 end
 
 require 'rake/testtask'
@@ -33,7 +33,7 @@ begin
   end
 rescue LoadError
   task :rcov do
-    abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
+    abort 'RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov'
   end
 end
 
