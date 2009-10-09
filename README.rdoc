@@ -15,9 +15,19 @@ solves square sudoku puzzles
     [nil, 5,   nil, nil, 6,   9,   7,   8,   4],
     [4,   nil, nil, 2,   5,   nil, nil, nil, nil]
   ]
-  
   sudoku = Sudoku.new(board)
-  puts sudoku
+  
+  puts sudoku  
+  # 2 . . . . 1 . 3 8
+  # . . . . . . . . 5
+  # . 7 . . . 6 . . .
+  # . . . . . . . 1 3
+  # . 9 8 1 . . 2 5 7
+  # 3 1 . . . . 8 . .
+  # 9 . . 8 . . . 2 .
+  # . 5 . . 6 9 7 8 4
+  # 4 . . 2 5 . . . .
+  
   puts sudoku.solve
 
 == Note on Patches/Pull Requests

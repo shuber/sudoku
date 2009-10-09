@@ -14,7 +14,8 @@ class SudokuTest < Test::Unit::TestCase
       [4,   nil, nil, 2,   5,   nil, nil, nil, nil]
     ]
     
-    puts Sudoku.new(board)
-    puts Sudoku.new(board).solve
+    sudoku = Sudoku.new(board)
+    puts sudoku
+    puts sudoku.solve
   end
 end
