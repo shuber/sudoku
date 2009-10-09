@@ -30,7 +30,18 @@ class Sudoku
   protected
   
     def result #:nodoc:
-      board
+      solved_board = board.dup
+      solved_board.each_with_index do |row, row_index|
+        row.each_with_index do |cell, cell_index|
+          next unless cell.nil?
+          options[:values].each do |value|
+            unless row.include?(value) || solved_board.any? { |r| r[cell_index] == value }
+              solved_board[row_index][cell_index] = value
+              break
+            end
+          end
+        end
+      end
     end
     
     def validate! #:nodoc:

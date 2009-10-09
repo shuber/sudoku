@@ -16,6 +16,7 @@ class SudokuTest < Test::Unit::TestCase
     
     sudoku = Sudoku.new(board)
     puts sudoku
+    puts ''
     puts sudoku.solve
   end
 end
