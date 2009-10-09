@@ -15,4 +15,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2009 Sean Huber. See LICENSE for details.
+Copyright (c) 2009 Sean Huber. See MIT-LICENSE for details.
