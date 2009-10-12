@@ -1,1 +1,1 @@
-Dir[File.join(File.dirname(__FILE__), 'sudoku', '**', '*')].each { |file| require file }
+Dir[File.join(File.dirname(__FILE__), 'sudoku', '**', '*.rb')].each { |file| require file }
