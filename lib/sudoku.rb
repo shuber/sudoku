@@ -74,10 +74,12 @@ module Sudoku
       validate_arguments!
     end
     
+    # Returns the value for the puzzle cell at the specified coordinate
     def [](row, column)
       puzzle[row][column]
     end
     
+    # Sets the value for the puzzle cell at the specified coordinate
     def []=(row, column, value)
       puzzle[row][column] = value
     end
