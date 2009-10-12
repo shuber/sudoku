@@ -74,6 +74,14 @@ module Sudoku
       validate_arguments!
     end
     
+    def [](row, column)
+      puzzle[row][column]
+    end
+    
+    def []=(row, column, value)
+      puzzle[row][column] = value
+    end
+    
     # Returns the values associated with a column
     def column(index)
       columns[index]
@@ -160,7 +168,7 @@ module Sudoku
     
     # Returns an array of the values associated with an array of coordinates
     def values(coords)
-      coords.collect { |coord| puzzle[coord[0]][coord[1]] }
+      coords.collect { |coord| self[*coord] }
     end
     
     protected
@@ -185,7 +193,7 @@ module Sudoku
           if failing_values[section_index] == missing_values[section_index][0]
             raise ArgumentError.new('Invalid puzzle - cannot be solved') if entries.empty?
             entry = entries.pop
-            puzzle[entry[:coord][0]][entry[:coord][1]] = nil
+            self[*entry[:coord]] = nil
             missing_values[entry[:section_index]] << entry[:value]
             failing_values[entry[:section_index]] = entry[:failing_value] || entry[:value]
             unless section_index == entry[:section_index]
@@ -197,12 +205,12 @@ module Sudoku
               value = missing_values[section_index].shift
               section_values = values(section)
               coord = section[section_values.index(nil)]
-              puzzle[coord[0]][coord[1]] = value
+              self[*coord] = value
               if valid_row?(coord[0]) && valid_column?(coord[1])
                 entries << { :section_index => section_index, :coord => coord, :value => value, :failing_value => failing_values[section_index] }
                 failing_values[section_index] = nil
               else
-                puzzle[coord[0]][coord[1]] = nil
+                self[*coord] = nil
                 missing_values[section_index] << value
                 failing_values[section_index] ||= value
                 break
