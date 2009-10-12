@@ -1,6 +1,6 @@
 module Sudoku
   module Solvers
-    module Guess
+    module Search
       
       protected
       
@@ -11,7 +11,6 @@ module Sudoku
           entries = []
           section_index = 0
           until section_index == puzzle.size
-            puts "section #{section_index} - #{missing_values[section_index].inspect}"
             section = sorted_sections[section_index]
             if failing_values[section_index] == missing_values[section_index][0]
               unsolvable_puzzle! if entries.empty?

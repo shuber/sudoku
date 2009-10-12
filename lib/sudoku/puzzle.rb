@@ -55,7 +55,7 @@ module Sudoku
     #                  Defaults to a period.
     #   :solver      - A module containing a <tt>solve</tt> method to mix into this puzzle instance.
     #                  This allows you to experiment with different solving algorithms. Defaults to
-    #                  Sudoku::Solvers::Guess
+    #                  Sudoku::Solvers::Search
     #
     # Example:
     #
@@ -107,7 +107,7 @@ module Sudoku
     
     # Returns a hash of options for this instance
     def options
-      @options ||= { :values => (1..puzzle.size).to_a, :blank => '.', :solver => Solvers::Guess }
+      @options ||= { :values => (1..puzzle.size).to_a, :blank => '.', :solver => Solvers::Search }
     end
     
     # Returns the values associated with a row
