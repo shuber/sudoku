@@ -44,5 +44,17 @@ Sudoku::InvalidPuzzle = [
   [  4, nil, nil,   2,   5, nil, nil, nil, nil]
 ]
 
+Sudoku::WorldsHardestPuzzle = [
+  [  1, nil, nil, nil, nil,   7, nil,   9, nil],
+  [nil,   3, nil, nil,   2, nil, nil, nil,   8],
+  [nil, nil,   9,   6, nil, nil,   5, nil, nil],
+  [nil, nil,   5,   3, nil, nil,   6, nil, nil],
+  [nil,   1, nil, nil,   8, nil, nil, nil,   2],
+  [  6, nil, nil, nil, nil,   4, nil, nil, nil],
+  [  3, nil, nil, nil, nil, nil, nil,   1, nil],
+  [nil,   4, nil, nil, nil, nil, nil, nil,   7],
+  [nil, nil,   7, nil, nil, nil,   3, nil, nil]
+]
+
 class Test::Unit::TestCase
 end
