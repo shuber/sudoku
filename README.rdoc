@@ -45,8 +45,7 @@ See http://en.wikipedia.org/wiki/Sudoku
 == TODO
 
 * Finish tests
-* Threading
-* Text puzzle parser
+* Look into failures with default solver
 
 == Note on Patches/Pull Requests
  

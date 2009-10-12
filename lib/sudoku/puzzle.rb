@@ -72,7 +72,7 @@ module Sudoku
     #   ]
     #   sudoku = Sudoku::Puzzle.new(unsolved_puzzle, :blank => 'x')
     def initialize(puzzle, options = {})
-      @puzzle = puzzle
+      @puzzle = puzzle.dup
       self.options.merge!(options)
       convert_puzzle_and_option_values_into_strings!
       validate_arguments!
@@ -178,6 +178,11 @@ module Sudoku
       coords.collect { |coord| self[*coord] }
     end
     
+    def self.parse(puzzle, blank = '.')
+      size = Math.sqrt(puzzle.size)
+      puzzle.split(puzzle =~ /\s+/ ? /\s+/ : '').collect! { |value| value == blank ? nil : value }.enum_for(:each_slice, size).to_a
+    end
+    
     protected
     
       def convert_puzzle_and_option_values_into_strings! #:nodoc:
@@ -197,6 +202,10 @@ module Sudoku
         column_start = column_offset * section_size
         column_end = column_start + section_size - 1
         ((row_start..row_end).to_a * section_size).sort.zip((column_start..column_end).to_a * section_size)
+      end
+      
+      def unsolvable_puzzle! #:nodoc:
+        raise ArgumentError.new('Invalid puzzle - cannot be solved')
       end
       
       def validate_arguments! #:nodoc:

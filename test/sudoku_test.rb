@@ -44,8 +44,10 @@ class SudokuTest < Test::Unit::TestCase
     end
     
     should 'be raised if the puzzle is invalid and cannot be solved' do
-      assert_raises ArgumentError do
-        Sudoku::Puzzle.new(Sudoku::InvalidPuzzle).solve!
+      Sudoku::InvalidPuzzles.each do |puzzle|
+        assert_raises ArgumentError do
+          Sudoku::Puzzle.new(puzzle).solve!
+        end
       end
     end
   end

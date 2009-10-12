@@ -11,9 +11,10 @@ module Sudoku
           entries = []
           section_index = 0
           until section_index == puzzle.size
+            puts "section #{section_index} - #{missing_values[section_index].inspect}"
             section = sorted_sections[section_index]
             if failing_values[section_index] == missing_values[section_index][0]
-              raise ArgumentError.new('Invalid puzzle - cannot be solved') if entries.empty?
+              unsolvable_puzzle! if entries.empty?
               entry = entries.pop
               self[*entry[:coord]] = nil
               missing_values[entry[:section_index]] << entry[:value]
@@ -26,7 +27,7 @@ module Sudoku
               until valid_section?(section)
                 value = missing_values[section_index].shift
                 section_values = values(section)
-                coord = section[section_values.index(nil)]
+                coord = section[section_values.index(nil)] rescue unsolvable_puzzle!
                 self[*coord] = value
                 if valid_row?(coord[0]) && valid_column?(coord[1])
                   entries << { :section_index => section_index, :coord => coord, :value => value, :failing_value => failing_values[section_index] }
