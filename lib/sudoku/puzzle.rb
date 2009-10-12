@@ -54,7 +54,7 @@ module Sudoku
     #   :blank       - The string to use for nil values when printing out the puzzle as a string.
     #                  Defaults to a period.
     #   :solver      - A module containing a <tt>solve</tt> method to mix into this puzzle instance.
-    #                  This allows you to expirement with different solving algorithms. Defaults to
+    #                  This allows you to experiment with different solving algorithms. Defaults to
     #                  Sudoku::Solvers::Guess
     #
     # Example:
