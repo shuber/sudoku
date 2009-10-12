@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = 'sudoku'
-    gem.summary = 'solves square sudoku puzzles'
-    gem.description = 'solves square sudoku puzzles'
+    gem.summary = 'Solves traditional square Sudoku puzzles'
+    gem.description = 'Solves traditional square Sudoku puzzles'
     gem.email = 'shuber@huberry.com'
     gem.homepage = 'http://github.com/shuber/sudoku'
     gem.authors = ['Sean Huber']
