@@ -71,6 +71,7 @@ module Sudoku
     def initialize(puzzle, options = {})
       @puzzle = puzzle
       self.options.merge!(options)
+      convert_puzzle_and_option_values_into_strings!
       validate_arguments!
     end
     
@@ -175,6 +176,11 @@ module Sudoku
     
     protected
     
+      def convert_puzzle_and_option_values_into_strings! #:nodoc:
+        puzzle.collect! { |row| row.collect! { |cell| cell.nil? ? nil : cell.to_s } }
+        options[:values].collect! { |value| value.to_s }
+      end
+      
       # Returns an array of coordinates for the section starting at the specified <tt>row_offset</tt> and <tt>column_offset</tt>
       def section_coordinates(row_offset, column_offset)
         row_start = row_offset * section_size

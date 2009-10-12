@@ -12,7 +12,7 @@ class SudokuTest < Test::Unit::TestCase
   
   should 'set the default options[:values] to a range up to the size of the puzzle' do
     Sudoku::Puzzles.each do |puzzle|
-      assert_equal((1..puzzle.size).to_a, Sudoku::Puzzle.new(puzzle).options[:values])
+      assert_equal((1..puzzle.size).to_a.collect!{ |value| value.to_s }, Sudoku::Puzzle.new(puzzle).options[:values])
     end
   end
   
