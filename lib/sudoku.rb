@@ -40,9 +40,9 @@ module Sudoku
   #   # 9 3 7 8 1 4 5 2 6
   #   # 1 5 2 3 6 9 7 8 4
   #   # 4 8 6 2 5 7 3 9 1
-  class Puzzle < Array
+  class Puzzle
     
-    alias_method :columns, :transpose
+    attr_reader :puzzle
     
     # Accepts a puzzle as an array of rows and an optional hash of options
     #
@@ -69,7 +69,7 @@ module Sudoku
     #   ]
     #   sudoku = Sudoku::Puzzle.new(unsolved_puzzle, :blank => 'x')
     def initialize(puzzle, options = {})
-      super puzzle
+      @puzzle = puzzle
       self.options.merge!(options)
       validate_arguments!
     end
@@ -79,25 +79,25 @@ module Sudoku
       columns[index]
     end
     
+    # Returns an array of values associated with each column of the puzzle
+    def columns
+      puzzle.transpose
+    end
+    
     # Returns the size of the longest member in optinos[:values]
     # This is used by <tt>puzzle</tt> to make sure the columns are printed out evenly
     def max_value_size
-      @max_value_size ||= options[:values].max { |a, b| a.size <=> b.size }
+      @max_value_size ||= options[:values].max { |a, b| a.size <=> b.size }.size
     end
     
     # Returns a hash of options for this instance
     def options
-      @options ||= { :values => (1..size).to_a, :blank => '.' }
-    end
-    
-    # Returns a string representation of the puzzle
-    def puzzle
-      inject([]) { |rows, row| rows << row.map { |value| (value || options[:blank]).to_s.rjust(max_value_size) }.join(' ') }.join("\n")
+      @options ||= { :values => (1..puzzle.size).to_a, :blank => '.' }
     end
     
     # Returns the values associated with a row
     def row(index)
-      self[index]
+      puzzle[index]
     end
     
     # Returns the size of this puzzle's sections
@@ -107,7 +107,7 @@ module Sudoku
     #   sudoku = Sudoku::Puzzle.new(puzzle_9x9)
     #   sudoku.section_size # => 3
     def section_size
-      @section_size ||= Math.sqrt(size).to_i
+      @section_size ||= Math.sqrt(puzzle.size).to_i
     end
     
     # Returns an array of coordinates corresponding to each section
@@ -130,9 +130,14 @@ module Sudoku
       self
     end
     
+    # Returns a string representation of the puzzle
+    def to_s
+      puzzle.inject([]) { |rows, row| rows << row.map { |value| (value || options[:blank]).to_s.rjust(max_value_size) }.join(' ') }.join("\n")
+    end
+    
     # Checks if this puzzle has been solved correctly
     def valid?
-      1.upto(size) { |index| return false unless valid_row?(index - 1) && valid_column?(index - 1) }
+      1.upto(puzzle.size) { |index| return false unless valid_row?(index - 1) && valid_column?(index - 1) }
       sections.all? { |section| valid_section?(section) }
     end
     
@@ -144,7 +149,7 @@ module Sudoku
     
     # Checks if all values are filled in and unique for the row at the specified <tt>index</tt>.
     def valid_row?(index)
-      row_values = self[index].compact
+      row_values = row(index).compact
       row_values == row_values.uniq
     end
     
@@ -155,7 +160,7 @@ module Sudoku
     
     # Returns an array of the values associated with an array of coordinates
     def values(coords)
-      coords.collect { |coord| self[coord[0]][coord[1]] }
+      coords.collect { |coord| puzzle[coord[0]][coord[1]] }
     end
     
     protected
@@ -170,17 +175,17 @@ module Sudoku
       end
       
       def solve #:nodoc:
-        sorted_sections = sections.sort { |a, b| values(a).nitems <=> values(b).nitems }.reverse!
-        failing_values = Array.new(size, nil)
+        sorted_sections = sections.sort { |a, b| values(b).nitems <=> values(a).nitems }
+        failing_values = Array.new(puzzle.size, nil)
         missing_values = sorted_sections.collect { |section| options[:values].reject { |value| values(section).include?(value) } }
         entries = []
         section_index = 0
-        until section_index == size
+        until section_index == puzzle.size
           section = sorted_sections[section_index]
           if failing_values[section_index] == missing_values[section_index][0]
             raise ArgumentError.new('Invalid puzzle - cannot be solved') if entries.empty?
             entry = entries.pop
-            self[entry[:coord][0]][entry[:coord][1]] = nil
+            puzzle[entry[:coord][0]][entry[:coord][1]] = nil
             missing_values[entry[:section_index]] << entry[:value]
             failing_values[entry[:section_index]] = entry[:failing_value] || entry[:value]
             unless section_index == entry[:section_index]
@@ -192,12 +197,12 @@ module Sudoku
               value = missing_values[section_index].shift
               section_values = values(section)
               coord = section[section_values.index(nil)]
-              self[coord[0]][coord[1]] = value
+              puzzle[coord[0]][coord[1]] = value
               if valid_row?(coord[0]) && valid_column?(coord[1])
                 entries << { :section_index => section_index, :coord => coord, :value => value, :failing_value => failing_values[section_index] }
                 failing_values[section_index] = nil
               else
-                self[coord[0]][coord[1]] = nil
+                puzzle[coord[0]][coord[1]] = nil
                 missing_values[section_index] << value
                 failing_values[section_index] ||= value
                 break
@@ -209,8 +214,8 @@ module Sudoku
       end
       
       def validate_arguments! #:nodoc:
-        raise ArgumentError.new('Puzzle size must be a square - e.g. 4x4, 9x9, 16x16, 25x25') unless section_size == Math.sqrt(size) && size == columns.size
-        raise ArgumentError.new("Must specify #{size} values for a #{size}x#{size} puzzle") unless size == options[:values].size
+        raise ArgumentError.new('Puzzle size must be a square - e.g. 4x4, 9x9, 16x16, 25x25') unless section_size == Math.sqrt(puzzle.size) && puzzle.size == columns.size
+        raise ArgumentError.new("Must specify #{puzzle.size} values for a #{puzzle.size}x#{puzzle.size} puzzle") unless puzzle.size == options[:values].size
         raise ArgumentError.new('Must specify unique values in options[:values]') unless options[:values] == options[:values].uniq
       end
       
